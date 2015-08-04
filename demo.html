@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, minimal-ui"/>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no, email=no">
+    <link rel="stylesheet" href="" />
+    <title></title>
+    <style>
+    .disabled{ color: #999; cursor: default;}
+    .reduce,.add{ padding:2px;text-decoration: none;}
+    </style>
+</head>
+<body>
+
+<a class="reduce" href="javascript:">-</a><input class="num" type="text" value="1"><a class="add" href="javascript:">+</a><stong class="price">20</stong>
+<script type="text/javascript">
+    (function(){
+        var num= document.querySelector(".num"),
+            add= document.querySelector(".add"),
+            reduce= document.querySelector(".reduce"),
+            price= document.querySelector(".price"),
+            priceNum=price.innerHTML;
+            //初始化价格值
+            price.innerHTML=priceNum*num.value;
+            if(num.value==1){
+                reduce.classList.add("disabled");  
+            }
+            num.onfocus=function(){
+                currentNum=num.value;
+            }
+            num.onkeyup = function ()
+            {
+                if(/\D/.test(num.value)&&(currentNum==1)){//检查用户输入的值是否是数字及当前值为1
+                    num.value=currentNum;
+                    price.innerHTML=currentNum*priceNum;
+                    reduce.classList.add("disabled");
+                    alert("请您输入正确的数量！");
+                }else if(/\D/.test(num.value)&&(currentNum!=1)){//检查用户输入的值是否是数字及当前值不为1
+                    num.value=currentNum;
+                    price.innerHTML=currentNum*priceNum;
+                    alert("请您输入正确的数量！");   
+                }else{
+                    if(num.value==1){   
+                        reduce.classList.add("disabled");  
+                    }else{
+                        reduce.classList.remove("disabled");
+                    }
+                    price.innerHTML=num.value*priceNum;   
+                }
+            }
+            num.onblur=function(){
+                //判断是否为0
+                if(currentNum==1&&num.value<1){
+                    alert("至少购买一件哦！"); 
+                    num.value=currentNum; 
+                    price.innerHTML=currentNum*20;
+                    reduce.classList.add("disabled");    
+                }else if(currentNum!==1&&num.value<1){
+                    alert("商品数量必须大于0！"); 
+                    num.value=currentNum; 
+                    price.innerHTML=currentNum*20; 
+                }
+            }
+            add.addEventListener("click",function(){
+                {
+                    num.value=parseInt(num.value)+1;
+                    price.innerHTML=num.value*priceNum;
+                    reduce.classList.remove("disabled");
+                }   
+            },false);
+            reduce.addEventListener("click",function(){
+                if(num.value>1){
+                    num.value=parseInt(num.value)-1;
+                    price.innerHTML=num.value*priceNum;
+                    var reduceNum=num.value;
+                }else{
+                    reduce.classList.add("disabled");
+                    alert("至少购买一件哦！"); 
+                    num.value=1;   
+                }
+                if(reduceNum==1){
+                    reduce.classList.add("disabled");   
+                }
+            },false);
+    })()
+   
+</script>
+</body>
